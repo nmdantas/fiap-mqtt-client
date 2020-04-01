@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 const redis = require('redis');
 
 const mqttClient = mqtt.connect('mqtt://likyjqkw:Zwx1-XnEvWgV@tailor.cloudmqtt.com:14970');
-const redisClient = redis.createClient('redis://h:p8ad81150b756c40e26aa0022d8b037a6eabef4613ea73750d2fee8cd3c77c3f4@ec2-52-202-177-173.compute-1.amazonaws.com:29379');
+const redisClient = redis.createClient('redis://h:pd3a1b8206963eea358af12e9ba519a1a39a0105c4e2df6d397744b6f3bfe268d@ec2-52-202-177-173.compute-1.amazonaws.com:12469');
 
 redisClient.on('ready', () => {
     console.info('REDIS:Ready');
