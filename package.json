@@ -24,6 +24,7 @@
   "homepage": "https://github.com/nmdantas/fiap-mqtt-client#readme",
   "dependencies": {
     "ansi": "^0.3.1",
+    "express": "^4.17.1",
     "mqtt": "^3.0.0",
     "pg": "^8.0.0",
     "redis": "^3.0.2"
