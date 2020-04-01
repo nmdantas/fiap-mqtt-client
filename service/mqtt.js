@@ -19,7 +19,7 @@ const publish = (message) => {
             content = message.content.toString();
         }
 
-        const result = client.publish(message.topic, content, {retain: true});
+        const result = client.publish(message.topic, content);
 
         return {
             correlationId: result.nextId

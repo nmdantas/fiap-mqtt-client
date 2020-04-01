@@ -15,21 +15,58 @@ const createUser = async (name) => {
 
         return response.rows[0];
     } catch (error) {
-        console.error('POSTGRE:User-Error');
+        console.error('POSTGRE:User-Insert-Error');
         console.error(error);
     }
 };
 
-const deleteUser = (id) => {
+const deleteUser = async (id) => {
     console.info('POSTGRE:User-Delete:' + id);
+
+    const params = [];
+    params.push(id);
+
+    try {
+        const response = await databasePool.query('delete from users where id = $1 returning *', params);
+
+        return response.rows[0];
+    } catch (error) {
+        console.error('POSTGRE:User-Delete-Error');
+        console.error(error);
+    }
 };
 
-const findAllUsers = () => {
+const findAllUsers = async () => {
     console.info('POSTGRE:User-Find');
+
+    const params = [];
+
+    try {
+        const response = await databasePool.query('select * from users', params);
+
+        return response.rows;
+    } catch (error) {
+        console.error('POSTGRE:User-Find-Error');
+        console.error(error);
+
+        return [];
+    }
 };
 
-const findUserById = (id) => {
-    console.info('POSTGRE:User-Find:' + name);
+const findUserById = async (id) => {
+    console.info('POSTGRE:User-Find:' + id);
+
+    const params = [];
+    params.push(id);
+
+    try {
+        const response = await databasePool.query('select * from users where id = $1', params);
+
+        return response.rows[0];
+    } catch (error) {
+        console.error('POSTGRE:User-Find-Error');
+        console.error(error);
+    }
 };
 
 module.exports = {
