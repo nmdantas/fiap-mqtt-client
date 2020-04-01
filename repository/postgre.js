@@ -27,7 +27,7 @@ const deleteUser = async (id) => {
     params.push(id);
 
     try {
-        const response = await databasePool.query('delete users where id = $1 returning *', params);
+        const response = await databasePool.query('delete from users where id = $1 returning *', params);
 
         return response.rows[0];
     } catch (error) {
