@@ -1,0 +1,30 @@
+{
+  "name": "fiap-mqtt-client",
+  "version": "1.0.0",
+  "description": "Simple mqtt & redis client",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Warning: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmdantas/fiap-mqtt-client.git"
+  },
+  "keywords": [
+    "mqtt",
+    "redis",
+    "fiap"
+  ],
+  "author": "Nicholas M. Dantas",
+  "license": "unlicense",
+  "bugs": {
+    "url": "https://github.com/nmdantas/fiap-mqtt-client/issues"
+  },
+  "homepage": "https://github.com/nmdantas/fiap-mqtt-client#readme",
+  "dependencies": {
+    "ansi": "^0.3.1",
+    "mqtt": "^3.0.0",
+    "redis": "^3.0.2"
+  }
+}
