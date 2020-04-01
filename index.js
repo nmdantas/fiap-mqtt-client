@@ -22,7 +22,7 @@ redisClient.get('test/test', (error, reply) => {
         console.error('REDIS:Error');
         console.error(error);
     } else {
-        console.error('REDIS:Get');
+        console.info('REDIS:Get');
         console.info(reply);
     }
 });
