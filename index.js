@@ -29,12 +29,16 @@ const createUser = (name) => {
 const startDate = new Date();
 const messages = [];
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.json({
         since: startDate,
         count: messages.length,
         itens: messages
     });
+});
+
+app.post('/', (req, res) => {
+  
 });
    
 app.listen(process.env.PORT || 3000);
