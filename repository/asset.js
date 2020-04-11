@@ -131,6 +131,24 @@ const findByEstablishmentId = async (establishmentId) => {
     }
 };
 
+const findBySerialNumber = async (serialNumber) => {
+    console.info('POSTGRE:Asset-Find-By-Serial-Number:' + serialNumber);
+
+    const params = [];
+    params.push(serialNumber);
+
+    try {
+        const response = await databasePool.query('select * from assets where gps_serial_number = $1', params);
+
+        return response.rows[0];
+    } catch (error) {
+        console.error('POSTGRE:Asset-Find-By-Serial-Number-Error');
+        console.error(error);
+
+        return null;
+    }
+};
+
 const findLogsById = async (id) => {
     console.info('POSTGRE:Asset-Find-Logs:' + id);
 
@@ -168,6 +186,7 @@ module.exports = {
     findAll: findAll,
     findById: findById,
     findByEstablishmentId: findByEstablishmentId,
+    findBySerialNumber: findBySerialNumber,
     location: {
         update: updateLocation,
         history: findLogsById

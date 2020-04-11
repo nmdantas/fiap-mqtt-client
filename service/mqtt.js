@@ -31,6 +31,7 @@ client.on('connect', () => {
     console.info('MQTT:Connect');
 
     client.subscribe('test/user');
+    client.subscribe('assets/location');
 
     ready = true;
 });
@@ -51,6 +52,21 @@ client.on('message', async (topic, message) => {
 
             const newUser = await database.user.create(userName);
             console.info('MQTT:User-Insert:' + JSON.stringify(newUser));
+            break;
+        case 'assets/location':
+            const body = JSON.parse(message.toString());
+            body.timestamp = new Date();
+            console.info(JSON.stringify(body));
+
+            const asset = await database.asset.findBySerialNumber(body.gps_serial_number);
+
+            if (asset != null) {
+                const response = await database.asset.location.update(asset.id, body);
+                console.info(`MQTT:Asset-Update-Location:${JSON.stringify(response)}`);
+            } else {
+                console.warn(`MQTT:Asset-Update-Location:Not-Found-${body.gps_serial_number}`);
+            }
+            
             break;
         default:
             console.info(message.toString());
