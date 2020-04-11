@@ -44,7 +44,7 @@ router.delete('/assets/:id', async (req, res) => {
 router.get('/assets/:id/logs', async (req, res) => {
     const result = await repository.asset.location.history(req.params.id);
     
-    if (result) {
+    if (result.length > 0) {
         res.json(result);
     } else {
         res.status(404).end();
@@ -59,7 +59,7 @@ router.put('/assets/:id/logs', async (req, res) => {
     if (result) {
         res.json(result);
     } else {
-        res.status(404).end();
+        res.status(400).end();
     }
 });
 

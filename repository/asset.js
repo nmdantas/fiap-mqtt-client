@@ -39,6 +39,23 @@ const exclude = async (id) => {
     }
 };
 
+const associate = async (establishmentId, assetId) => {
+    console.info('POSTGRE:Asset-Associate:' + establishmentId + ',' + assetId);
+
+    const params = [];
+    params.push(establishmentId);
+    params.push(assetId);
+
+    try {
+        const response = await databasePool.query('update assets set establishment_id = $1 where id = $2 returning *', params);
+
+        return response.rows[0];
+    } catch (error) {
+        console.error('POSTGRE:Asset-Associate-Error');
+        console.error(error);
+    }
+};
+
 const updateLocation = async (id, location) => {
     console.info('POSTGRE:Asset-Update-Location:' + id);
 
@@ -98,6 +115,22 @@ const findById = async (id) => {
     }
 };
 
+const findByEstablishmentId = async (establishmentId) => {
+    console.info('POSTGRE:Asset-Find-By-Establishment:' + establishmentId);
+
+    const params = [];
+    params.push(establishmentId);
+
+    try {
+        const response = await databasePool.query('select * from assets where establishment_id = $1', params);
+
+        return response.rows;
+    } catch (error) {
+        console.error('POSTGRE:Asset-Find-By-Establishment-Error');
+        console.error(error);
+    }
+};
+
 const findLogsById = async (id) => {
     console.info('POSTGRE:Asset-Find-Logs:' + id);
 
@@ -105,7 +138,19 @@ const findLogsById = async (id) => {
     params.push(id);
 
     try {
-        const response = await databasePool.query('select * from assets_logs where asset_id = $1', params);
+        const response = await databasePool.query(`
+        select * 
+        from (
+            select a.establishment_id, a.location, a.timestamp, a.metadata 
+            from assets_logs a
+            where a.asset_id = $1
+            union all
+            select b.establishment_id, b.last_location as location, b.last_update as timestamp, b.metadata
+            from assets b
+            where b.id = $1
+        ) as aux
+        where timestamp is not null
+        order by timestamp desc`, params);
 
         return response.rows;
     } catch (error) {
@@ -119,8 +164,10 @@ const findLogsById = async (id) => {
 module.exports = {
     create: create,
     delete: exclude,
+    associate: associate,
     findAll: findAll,
     findById: findById,
+    findByEstablishmentId: findByEstablishmentId,
     location: {
         update: updateLocation,
         history: findLogsById

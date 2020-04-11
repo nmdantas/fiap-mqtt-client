@@ -31,6 +31,26 @@ router.get('/establishments/:id', async (req, res) => {
     }
 });
 
+router.get('/establishments/:id/assets', async (req, res) => {
+    const result = await repository.asset.findByEstablishmentId(req.params.id);
+    
+    if (result.length > 0) {
+        res.json(result);
+    } else {
+        res.status(404).end();
+    }
+});
+
+router.put('/establishments/:id/assets/:asset_id', async (req, res) => {
+    const result = await repository.asset.associate(req.params.id, req.params.asset_id);
+    
+    if (result) {
+        res.json(result);
+    } else {
+        res.status(400).end();
+    }
+});
+
 router.delete('/establishments/:id', async (req, res) => {
     const result = await repository.establishment.delete(req.params.id);
     
