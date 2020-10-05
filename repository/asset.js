@@ -82,12 +82,12 @@ const findAll = async (active) => {
 
     try {
         if (active === undefined) {
-            const response = await databasePool.query('select * from assets', params);
+            const response = await databasePool.query('select a.*, current_timestamp - a.last_update as update_interval from assets a', params);
 
             return response.rows;
         } else {
             params.push(active);
-            const response = await databasePool.query('select * from assets where active = $1', params);
+            const response = await databasePool.query('select a.*, current_timestamp - a.last_update as update_interval from assets a where a.active = $1', params);
 
             return response.rows;
         }
@@ -106,7 +106,7 @@ const findById = async (id) => {
     params.push(id);
 
     try {
-        const response = await databasePool.query('select * from assets where id = $1', params);
+        const response = await databasePool.query('select a.*, current_timestamp - a.last_update as update_interval from assets a where a.id = $1', params);
 
         return response.rows[0];
     } catch (error) {
@@ -122,7 +122,7 @@ const findByEstablishmentId = async (establishmentId) => {
     params.push(establishmentId);
 
     try {
-        const response = await databasePool.query('select * from assets where establishment_id = $1', params);
+        const response = await databasePool.query('select a.*, current_timestamp - a.last_update as update_interval from assets a where a.establishment_id = $1', params);
 
         return response.rows;
     } catch (error) {
@@ -138,7 +138,7 @@ const findBySerialNumber = async (serialNumber) => {
     params.push(serialNumber);
 
     try {
-        const response = await databasePool.query('select * from assets where gps_serial_number = $1', params);
+        const response = await databasePool.query('select a.*, current_timestamp - a.last_update as update_interval from assets a where a.gps_serial_number = $1', params);
 
         return response.rows[0];
     } catch (error) {
