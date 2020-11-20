@@ -46,12 +46,12 @@ const findAll = async (active) => {
 
     try {
         if (active === undefined) {
-            const response = await databasePool.query('select * from establishments', params);
+            const response = await databasePool.query('select e.id,e.document_number,e.name,e.location,e.head_office_id,e.active,e.insert_date,count(a.id) assets_count,coalesce(sum(a.replenishment), 0) replenishment_value from establishments e left join assets a on e.id = a.establishment_id group by e.id,e.document_number,e.name,e.head_office_id,e.active,e.insert_date', params);
 
             return response.rows;
         } else {
             params.push(active);
-            const response = await databasePool.query('select * from establishments where active = $1', params);
+            const response = await databasePool.query('select e.id,e.document_number,e.name,e.location,e.head_office_id,e.active,e.insert_date,count(a.id) assets_count,coalesce(sum(a.replenishment), 0) replenishment_value from establishments e left join assets a on e.id = a.establishment_id  where active = $1 group by e.id,e.document_number,e.name,e.head_office_id,e.active,e.insert_date', params);
 
             return response.rows;
         }
